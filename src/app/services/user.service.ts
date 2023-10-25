@@ -14,4 +14,7 @@ export class UserService {
     return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
   }
 
+  logInUser(userData: any): Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/users/login`, userData);
+  }
 }
