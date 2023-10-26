@@ -10,11 +10,27 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  logInUser(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/users/login`, userData);
+  }
+
   getAllUsers(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
   }
 
-  logInUser(userData: any): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/users/login`, userData);
+  getOneUser(userId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/users/${userId}`);
+  }
+
+  createOneUser(userData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/users/`, userData);
+  }
+
+  updateOneUser(userId: string, changes: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/users`, userId, changes);
+  }
+
+  deleteOneUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/v1/users/${userId}`);
   }
 }
