@@ -1,5 +1,19 @@
 <div>
-  <input type="text" [(ngModel)]="userId" placeholder="191982681" />
-  <input type="password" [(ngModel)]="userPassword" placeholder="" />
-  <button (click)="LogIn()">Enviar</button>
+</div>
+
+<div class="container">
+  <div class="img-form">
+    <img src="../assets/logo.png" alt="">
+  </div>
+  <div class="form">
+    <div class="form-element">
+      <label>RUN usuario</label>
+      <input type="text" [(ngModel)]="userId" placeholder="11222333-4" />
+    </div>
+    <div class="form-element">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="userPassword" placeholder="Ingresa tu contraseña" />
+    </div>
+    <button (click)="LogIn()">Enviar</button>
+  </div>
 </div>

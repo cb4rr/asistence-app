@@ -5,14 +5,10 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class CourseService {
   apiUrl: string = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
-
-  logInUser(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/users/login`, userData);
-  }
 
   getAllUsers(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/v1/users`);

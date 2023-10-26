@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent implements OnInit {
   userId: string = '';
   userPassword: string = '';
 
-  constructor(private users: UserService, private router: Router) { }
+  constructor(private users: UserService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
@@ -23,8 +24,12 @@ export class LoginComponent implements OnInit {
     };
 
     this.users.logInUser(userData).subscribe((response) => {
-      sessionStorage.setItem("token", response.token);
+      if (!response.ok) {
+        return this.router.navigate(['/login']);
+      }
+      console.log(response);
+      this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
+      return this.router.navigate(['/home']);
     });
-    this.router.navigate(['/home']);
   }
 }
