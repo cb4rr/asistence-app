@@ -18,22 +18,25 @@ export class LoginComponent implements OnInit {
   }
 
   LogIn() {
+    if (this.userId === '' || this.userPassword === '') { return };
+
     const userData = {
       userId: this.userId,
       userPassword: this.userPassword
     };
 
-    this.users.logInUser(userData).subscribe((response) => {
-
-      this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
-      return this.router.navigate(['/home']);
-    }, (error) => {
-      if (!error.ok) {
-        this.toastr.error(`Credenciales erroneas`);
-        this.userId = '';
-        this.userPassword = '';
+    this.users.logInUser(userData).subscribe({
+      next: (response) => {
+        this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
+        return this.router.navigate(['/home'])
+      },
+      error: (error) => {
+        if (!error.ok) {
+          this.toastr.error(`Credenciales erroneas`);
+          this.userId = '';
+          this.userPassword = '';
+        }
       }
-      return;
     });
   }
 }
