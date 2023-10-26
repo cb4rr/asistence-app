@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.users.logInUser(userData).subscribe({
       next: (response) => {
         this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
-        return this.router.navigate(['/home'])
+        return this.router.navigate(['/home', { teacher: this.userId }])
       },
       error: (error) => {
         if (!error.ok) {
