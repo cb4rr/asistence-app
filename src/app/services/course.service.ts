@@ -10,23 +10,23 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
+  getAllCourses(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/courses`);
   }
 
-  getOneUser(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users/${userId}`);
+  getOneCourse(courseId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/courses/${courseId}`);
   }
 
-  createOneUser(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/users/`, userData);
+  createOneCourse(courseData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/courses/`, courseData);
   }
 
-  updateOneUser(userId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/users`, userId, changes);
+  updateOneCourse(courseId: string, changes: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/courses`, courseId, changes);
   }
 
-  deleteOneUser(userId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/v1/users/${userId}`);
+  deleteOneCourse(courseId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/v1/courses/${courseId}`);
   }
 }

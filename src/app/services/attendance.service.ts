@@ -10,23 +10,23 @@ export class AttendanceService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
+  getAllAttendances(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances`);
   }
 
-  getOneUser(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users/${userId}`);
+  getOneAttendance(attendanceId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
   }
 
-  createOneUser(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/users/`, userData);
+  createOneAttendance(attendanceData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/attendances/`, attendanceData);
   }
 
-  updateOneUser(userId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/users`, userId, changes);
+  updateOneAttendance(attendanceId: string, changes: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/attendances`, attendanceId, changes);
   }
 
-  deleteOneUser(userId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/v1/users/${userId}`);
+  deleteOneAttendance(attendanceId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
   }
 }

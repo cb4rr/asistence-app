@@ -10,23 +10,23 @@ export class ScheduleService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
+  getAllSchedules(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/schedules`);
   }
 
-  getOneUser(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users/${userId}`);
+  getOneSchedule(scheduleId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/v1/schedules/${scheduleId}`);
   }
 
-  createOneUser(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/users/`, userData);
+  createOneSchedule(scheduleData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/v1/schedules/`, scheduleData);
   }
 
-  updateOneUser(userId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/users`, userId, changes);
+  updateOneSchedule(scheduleId: string, changes: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/schedules`, scheduleId, changes);
   }
 
-  deleteOneUser(userId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/v1/users/${userId}`);
+  deleteOneSchedule(scheduleId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/v1/schedules/${scheduleId}`);
   }
 }

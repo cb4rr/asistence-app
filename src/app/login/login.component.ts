@@ -24,12 +24,16 @@ export class LoginComponent implements OnInit {
     };
 
     this.users.logInUser(userData).subscribe((response) => {
-      if (!response.ok) {
-        return this.router.navigate(['/login']);
-      }
-      console.log(response);
+
       this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
       return this.router.navigate(['/home']);
+    }, (error) => {
+      if (!error.ok) {
+        this.toastr.error(`Credenciales erroneas`);
+        this.userId = '';
+        this.userPassword = '';
+      }
+      return;
     });
   }
 }
