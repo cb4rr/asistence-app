@@ -1,0 +1,75 @@
+<div class="grid gap-4 m-4 p-4 max-w-screen-2xl">
+  <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
+    <div>
+      <h2 class="mb-2 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+        Tomar asistencia
+      </h2>
+
+      <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
+        {{this.informationCourse.nameSubject}}</h3>
+      <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
+        {{this.informationCourse.codeSubject}}</h3>
+    </div>
+    <div class="float-right">
+      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
+    </div>
+  </div>
+  <div class="max-w-lg">
+    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la jornada</label>
+    <select [(ngModel)]="workdaySelected" (change)="getCourses()" id="workday"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option value="Diurno">Diurno</option>
+      <option value="Vespertino">Vespertino</option>
+    </select>
+  </div>
+
+  <div class="block max-w-lg" *ngIf="filteredCourse?.length > 0">
+    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la carrera</label>
+    <select [(ngModel)]="courseSelected" (change)="getSchedule()" id="courses"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option *ngFor="let course of filteredCourse" value="{{course._id}}">{{course.courseName}}</option>
+    </select>
+  </div>
+
+  <div class="relative overflow-x-auto"
+    *ngIf="scheduleCourse?.length > 0">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">
+            Estudiante
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Nombre
+          </th>
+          <th scope="col" class="px-6 py-3">
+
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let course of filteredCourse">
+        <tr *ngFor="let student of course.studentArray" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ student }}
+          </th>
+          <td class="px-6 py-4">
+            {{ getStudentName(student) }}
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center mb-4">
+              <input id="{{student}}" type="radio" value="Presente" name="{{student}}"
+                [(ngModel)]="attendanceDetails[student]" (change)="updateStudentAttendance(student, 'Presente')"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+              <label for="default-radio-1"
+                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Presente</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flex justify-end" *ngIf="scheduleCourse?.length > 0">
+    <button (click)="confirmAttendance()" type="button"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Confirmar</button>
+  </div>
+</div>

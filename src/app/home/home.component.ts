@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   subjectInfo(subjectId: string) {
-    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subjectId: subjectId }])
+    console.log(subjectId);
+    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }])
   }
 }
