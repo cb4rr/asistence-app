@@ -14,14 +14,14 @@ export class PdfGeneratorService {
 
       const docDefinition = {
         content: [
-          { text: 'Informe de Asistencia' },
-          `Estudiante: ${studentName}`,
-          { text: 'Detalles de asistencia:' },
-          this.generateAttendanceDetails(attendanceData, studentIdToReport),
-          { text: 'Información adicional:' },
-          'Total de sesiones: ' + totalSessions,
-          'Asistencias: ' + presentSessions,
-          'Porcentaje de asistencia: ' + attendancePercentage,
+          { text: 'Informe de Asistencia', fontSize: 35, bold: true },
+          { text: `${studentName}`, fontSize: 24 },
+          { text: 'Detalles de asistencia:', fontSize: 17 },
+          { text: `${this.generateAttendanceDetails(attendanceData, studentIdToReport)}`, fontSize: 15 },
+          { text: 'Información adicional:', fontSize: 15 },
+          { text: `Total de sesiones: ${totalSessions}`, fontSize: 15 },
+          { text: `Asistencias: ${presentSessions}`, fontSize: 15 },
+          { text: `Porcentaje de asistencia: ${attendancePercentage}`, fontSize: 15 }
         ]
       };
 
@@ -37,7 +37,7 @@ export class PdfGeneratorService {
     attendanceData.forEach((session: any) => {
       const sessionDate = session.date;
       const attendanceStatus = session.studentIds.find((student: any) => student.studentId === studentIdToReport).attendanceStatus;
-      details.push(`${sessionDate}: ${attendanceStatus}`);
+      details.push(`${sessionDate}: ${attendanceStatus}\n`);
     });
 
     return details;

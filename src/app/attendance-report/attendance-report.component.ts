@@ -3,6 +3,7 @@ import { AttendanceService } from '../services/attendance.service';
 import { PdfGeneratorService } from '../services/pdf-generator.service';
 import { UserService } from '../services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { SubjectService } from '../services/subject.service';
 
 @Component({
   selector: 'app-attendance-report',
@@ -15,8 +16,11 @@ export class AttendanceReportComponent implements OnInit {
   allUsers: any;
   singleUser: any;
   studentIdToReport = '';
+  todayDate: Date = new Date();
+  selectedSubject: string = '';
+  allSubjects: any;
 
-  constructor(private attendance: AttendanceService, private pdfGeneratorService: PdfGeneratorService, private user: UserService, private toastr: ToastrService) {
+  constructor(private attendance: AttendanceService, private pdfGeneratorService: PdfGeneratorService, private user: UserService, private toastr: ToastrService, private subject: SubjectService) {
   }
 
   ngOnInit() {
@@ -27,19 +31,24 @@ export class AttendanceReportComponent implements OnInit {
     });
     this.user.getAllUsers().subscribe({
       next: (response) => {
-        this.allUsers = response.data.filter((user: any) => user.userRole !== 'profesor');  
+        this.allUsers = response.data.filter((user: any) => user.userRole !== 'profesor');
+      }
+    });
+
+    this.subject.getAllSubjects().subscribe({
+      next: (response) => {
+        this.allSubjects = response.data;
       }
     })
   }
 
   generateAttendanceReport() {
-    if (this.attendanceData) { // Verifica que attendanceData no sea undefined y que tenga la propiedad 'data'
+    if (this.attendanceData) {
       const studentData = this.attendanceData.data.filter((attendance: any) => {
-        return attendance.studentIds.some((student: any) => student.studentId === this.studentIdToReport);
+        return attendance.studentIds.some((student: any) => student.studentId === this.studentIdToReport && this.selectedSubject === attendance.codeSubject);
       });
 
       if (studentData.length === 0) {
-        // TODO ngIf no registros
         this.toastr.error('El estudiante no tiene registros de asistencia.');
         return;
       }
@@ -57,14 +66,14 @@ export class AttendanceReportComponent implements OnInit {
           this.blobPdf = URL.createObjectURL(blob);
         })
         .catch((error: any) => {
-          console.error('Error al generar el PDF:', error);
+          this.toastr.error('Error al generar el PDF');
         });
     } else {
-      console.log('Los datos de asistencia no están disponibles.');
+      this.toastr.error('Los datos de asistencia no están disponibles.');
     }
   }
 
-  getSingleStudent(){
+  getSingleStudent() {
     this.singleUser = this.allUsers.filter((user: any) => user.userId === this.studentIdToReport);
   }
 }
