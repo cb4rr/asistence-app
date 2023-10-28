@@ -12,7 +12,11 @@
     </div>
     <div class="grid gap-40 lg:grid-cols-4 w-full items-center">
       <div class="grid gap-8 lg:col-span-3 lg:grid-cols-2 w-full justify-center">
-        <article *ngFor="let subject of subjectTeacher" class="block w-full cursor-pointer">
+        <article *ngIf="subjectsForToday.length === 0">
+          <h2 class="mb-4 text-2xl lg:text-3xl tracking-tight font-normal text-gray-700 dark:text-white">No existen
+            asignaturas para el día de hoy...</h2>
+        </article>
+        <article *ngFor="let subject of subjectsForToday" class="block w-full cursor-pointer">
           <a (click)="subjectInfo(subject._id)"
             class="block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{subject.nameSubject}}

@@ -11,7 +11,7 @@ export class ScheduleService {
   constructor(private http: HttpClient) { }
 
   getAllSchedules(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/schedules`);
+    return this.http.get<any>(`${this.apiUrl}/api/v1/schedules/`);
   }
 
   getOneSchedule(scheduleId: string): Observable<any> {
@@ -23,7 +23,7 @@ export class ScheduleService {
   }
 
   updateOneSchedule(scheduleId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/schedules`, scheduleId, changes);
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/schedules/`, scheduleId, changes);
   }
 
   deleteOneSchedule(scheduleId: string): Observable<any> {

@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
-import { AttendanceComponent } from './home/attendance/attendance.component';
+import { AttendanceComponent } from './attendance/attendance.component';
 
 @NgModule({
   declarations: [

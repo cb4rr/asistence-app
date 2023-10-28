@@ -11,7 +11,7 @@ export class AttendanceService {
   constructor(private http: HttpClient) { }
 
   getAllAttendances(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances`);
+    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances/`);
   }
 
   getOneAttendance(attendanceId: string): Observable<any> {
@@ -23,7 +23,7 @@ export class AttendanceService {
   }
 
   updateOneAttendance(attendanceId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/attendances`, attendanceId, changes);
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/attendances/`, attendanceId, changes);
   }
 
   deleteOneAttendance(attendanceId: string): Observable<any> {
