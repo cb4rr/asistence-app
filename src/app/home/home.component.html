@@ -1,8 +1,8 @@
 <section class="bg-white dark:bg-gray-900 flex">
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 flex flex-col justify-center items-center">
     <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
-      <div>
-        <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">Bienvenido</p>
+      <div class="flex items-center justify-center gap-2">
+        <p class="font-light text-gray-500 sm:text-3xl dark:text-gray-400">Bienvenido</p>
         <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
           {{userInfo.data?.userName | uppercase }} {{userInfo.data?.userLastName | uppercase}}</h2>
       </div>
@@ -10,6 +10,7 @@
         <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
       </div>
     </div>
+
     <div class="grid gap-40 lg:grid-cols-4 w-full items-center">
       <div class="grid gap-8 lg:col-span-3 lg:grid-cols-2 w-full justify-center">
         <article *ngIf="subjectsForToday.length === 0">
