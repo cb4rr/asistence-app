@@ -14,7 +14,6 @@ import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
-import { ExamplePdfViewerComponent } from './example-pdf-viewer/example-pdf-viewer.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +21,7 @@ import { ExamplePdfViewerComponent } from './example-pdf-viewer/example-pdf-view
     LoginComponent,
     HomeComponent,
     AttendanceComponent,
-    AttendanceReportComponent,
-    ExamplePdfViewerComponent
+    AttendanceReportComponent
   ],
   imports: [
     BrowserModule,
