@@ -1,5 +1,12 @@
-<div class="m-8">
-  <button (click)="generateAttendanceReport()">Obtener</button>
-  <ngx-extended-pdf-viewer [src]="blobPdf">
-  </ngx-extended-pdf-viewer>
+<div class="m-8 h-full">
+
+  <label for="student" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la jornada</label>
+  <select [(ngModel)]="studentIdToReport" (change)="getSingleStudent()" id="student"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option *ngFor="let student of allUsers" [value]="student.userId">{{student.userName}} {{student.userLastName}} {{student.userId}}</option>
+  </select>
+
+<button (click)="generateAttendanceReport()">Obtener</button>
+<ngx-extended-pdf-viewer [src]="blobPdf" [textLayer]="true">
+</ngx-extended-pdf-viewer>
 </div>

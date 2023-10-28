@@ -8,7 +8,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 export class PdfGeneratorService {
   constructor() { }
 
-  generateAttendanceReportPDF(studentName: string, attendanceData: any, studentIdToReport: string): Promise<any> {
+  generateAttendanceReportPDF(studentName: string, attendanceData: any, studentIdToReport: string, totalSessions: string, presentSessions: string, attendancePercentage: string): Promise<any> {
     return new Promise((resolve, reject) => {
       (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -17,7 +17,11 @@ export class PdfGeneratorService {
           { text: 'Informe de Asistencia' },
           `Estudiante: ${studentName}`,
           { text: 'Detalles de asistencia:' },
-          this.generateAttendanceDetails(attendanceData, studentIdToReport)
+          this.generateAttendanceDetails(attendanceData, studentIdToReport),
+          { text: 'Información adicional:' },
+          'Total de sesiones: ' + totalSessions,
+          'Asistencias: ' + presentSessions,
+          'Porcentaje de asistencia: ' + attendancePercentage,
         ]
       };
 
