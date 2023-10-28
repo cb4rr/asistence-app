@@ -47,23 +47,23 @@ export class HomeComponent implements OnInit {
       next: (data) => {
         const subjects = data[0].data; // Supongo que los datos relevantes están en data[0]
         const schedulesData = data[1].data; // Supongo que los datos relevantes están en data[1]
-    
+
         // Filtrar los horarios según tu criterio (mismo profesor y día actual)
         this.schedulesTeacher = schedulesData[0].schedules.filter((schedule: any) =>
           schedule.teacherId === this.userInfo.data.userId && schedule.dayOfWeek.toLowerCase() === this.todayName.toLowerCase()
         );
-    
+
         // Filtrar las asignaturas según tu criterio (mismo profesor)
         this.subjectsTeacher = subjects.filter((subject: any) =>
           subject.teacherId === this.userInfo.data.userId
         );
-    
+
         // Ahora, combina las asignaturas con los horarios
         this.subjectsForToday = this.schedulesTeacher.map((schedule: any) => {
           const matchingSubject = this.subjectsTeacher.find((subject: any) =>
             subject.teacherId === schedule.teacherId
           );
-    
+
           // Si se encuentra una asignatura que coincide con el horario, regresamos sus campos 'nameSubject' y 'codeSubject'
           if (matchingSubject) {
             return {
@@ -78,11 +78,15 @@ export class HomeComponent implements OnInit {
         this.toastr.error('Ha ocurrido un error al buscar los datos.');
       }
     });
-    
+
   }
 
   subjectInfo(subjectId: string) {
     console.log(subjectId);
     this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }])
+  }
+
+  getReport() {
+    this.router.navigate(['/report', { teacher: this.userId }]);
   }
 }
