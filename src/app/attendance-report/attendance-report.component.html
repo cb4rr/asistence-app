@@ -1,0 +1,38 @@
+<div class="m-4 p-6 h-full">
+  <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
+    <div>
+      <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+        Reportes
+      </h2>
+    </div>
+    <div class="float-right">
+      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
+    </div>
+  </div>
+
+  <div class="flex gap-4 w-full h-1/6 items-center">
+    <div class="w-full">
+      <label for="student" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige el
+        estudiante</label>
+      <select [(ngModel)]="studentIdToReport" (change)="getSingleStudent()" id="student"
+        class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option *ngFor="let student of allUsers" [value]="student.userId">{{student.userName}} {{student.userLastName}}
+          {{student.userId}}</option>
+      </select>
+    </div>
+    <div class="w-full">
+      <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la materia</label>
+      <select [(ngModel)]="selectedSubject" (change)="getSingleStudent()" id="subject"
+        class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option *ngFor="let subject of allSubjects" [value]="subject.codeSubject">{{subject.nameSubject}} {{subject.codeSubject}}</option>
+      </select>
+    </div>
+    <div class="max-w-xs pt-8">
+      <button (click)="generateAttendanceReport()"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Obtener</button>
+    </div>
+  </div>
+
+  <ngx-extended-pdf-viewer [src]="blobPdf" [textLayer]="true">
+  </ngx-extended-pdf-viewer>
+</div>

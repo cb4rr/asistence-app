@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   logInUser(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/users/login`, userData);
+    return this.http.post<any>(`${this.apiUrl}/api/v1/users/login/`, userData);
   }
 
   getAllUsers(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/users`);
+    return this.http.get<any>(`${this.apiUrl}/api/v1/users/`);
   }
 
   getOneUser(userId: string): Observable<any> {
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   updateOneUser(userId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/users`, userId, changes);
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/users/`, userId, changes);
   }
 
   deleteOneUser(userId: string): Observable<any> {

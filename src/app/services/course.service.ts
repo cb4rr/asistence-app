@@ -11,7 +11,7 @@ export class CourseService {
   constructor(private http: HttpClient) { }
 
   getAllCourses(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/courses`);
+    return this.http.get<any>(`${this.apiUrl}/api/v1/courses/`);
   }
 
   getOneCourse(courseId: string): Observable<any> {
@@ -23,7 +23,7 @@ export class CourseService {
   }
 
   updateOneCourse(courseId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/courses`, courseId, changes);
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/courses/`, courseId, changes);
   }
 
   deleteOneCourse(courseId: string): Observable<any> {

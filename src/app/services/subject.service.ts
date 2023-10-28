@@ -11,7 +11,7 @@ export class SubjectService {
   constructor(private http: HttpClient) { }
 
   getAllSubjects(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/subjects`);
+    return this.http.get<any>(`${this.apiUrl}/api/v1/subjects/`);
   }
 
   getOneSubject(subjectId: string): Observable<any> {
@@ -23,7 +23,7 @@ export class SubjectService {
   }
 
   updateOneSubject(subjectId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/subjects`, subjectId, changes);
+    return this.http.patch<any>(`${this.apiUrl}/api/v1/subjects/`, subjectId, changes);
   }
 
   deleteOneSubject(subjectId: string): Observable<any> {
