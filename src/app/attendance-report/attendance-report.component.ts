@@ -7,6 +7,7 @@ import { SubjectService } from '../services/subject.service';
 import { Attendance } from '../models/attendance';
 import { DatumUser, SingleUser, User, UserRole } from '../models/user';
 import { DatumSubject } from '../models/subject';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-attendance-report',
@@ -22,11 +23,24 @@ export class AttendanceReportComponent implements OnInit {
   todayDate: Date = new Date();
   selectedSubject: string = '';
   allSubjects: DatumSubject[] = [];
+  teacherId: string = '';
+  teacherData: SingleUser = { ok: false, data: { __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', _id: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } };
 
-  constructor(private attendance: AttendanceService, private pdfGeneratorService: PdfGeneratorService, private user: UserService, private toastr: ToastrService, private subject: SubjectService) {
+
+  constructor(private attendance: AttendanceService, private pdfGeneratorService: PdfGeneratorService, private user: UserService, private toastr: ToastrService, private subject: SubjectService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.teacherId = params['teacher'];
+    });
+
+    this.user.getOneUser(this.teacherId).subscribe({
+      next: (response) => {
+        this.teacherData = response;
+      }
+    })
+
     this.attendance.getAllAttendances().subscribe({
       next: (response) => {
         this.attendanceData = response;

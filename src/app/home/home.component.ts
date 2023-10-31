@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   todayName: string = this.daysOfWeek[this.today];
   subjectsForToday: DatumSubject[] = [];
   schedulesTeacher: Schedules[] = [];
+  teacherData: SingleUser = { ok: false, data: { _id: '', __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } }
 
 
   constructor(private route: ActivatedRoute, private subject: SubjectService, private toastr: ToastrService, private user: UserService, private router: Router, private schedule: ScheduleService) { }

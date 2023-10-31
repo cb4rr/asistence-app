@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { PdfGeneratorService } from '../services/pdf-generator.service';
 import { UserService } from '../services/user.service';
 import { SubjectService } from '../services/subject.service';
-import { DatumUser } from '../models/user';
+import { DatumUser, SingleUser, UserRole } from '../models/user';
 import { Subject } from '../models/subject';
 import { ToastrService } from 'ngx-toastr';
 import { CourseService } from '../services/course.service';
 import { Course, DatumCourse } from '../models/course';
 import { AttendanceService } from '../services/attendance.service';
 import { Attendance } from '../models/attendance';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-semester-report',
@@ -24,6 +25,8 @@ export class SemesterReportComponent implements OnInit {
   blobPdf: any;
   todayDate: Date = new Date();
   allAttendances: Attendance = { ok: false, data: [] };
+  userId: string = '';
+  userInfo: SingleUser = { ok: false, data: { _id: '', __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } }
 
   constructor(
     private pdfGeneratorService: PdfGeneratorService,
@@ -31,10 +34,21 @@ export class SemesterReportComponent implements OnInit {
     private subject: SubjectService,
     private toastr: ToastrService,
     private course: CourseService,
-    private attendance: AttendanceService
+    private attendance: AttendanceService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.userId = params['teacher'];
+    });
+
+    this.user.getOneUser(this.userId).subscribe({
+      next: (response) => {
+        this.userInfo = response;
+      }
+    })
+
     this.user.getAllUsers().subscribe((response) => {
       this.allStudents = response.data.filter((user: any) => user.userRole !== 'profesor');
     });

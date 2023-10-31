@@ -1,12 +1,7 @@
+<app-navbar [userName]="teacherData.data.userName + ' ' + teacherData.data.userLastName" [teacherId]="teacherId" />
 <div class="grid gap-4 m-4 p-4 max-w-screen-2xl">
   <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
     <div>
-      <div class="flex justify-center gap-2 flex-col">
-        <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-          {{teacherData.data.userName | uppercase }} {{teacherData.data.userLastName | uppercase}}</h2>
-
-      </div>
-
       <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
         {{this.informationCourse.data.nameSubject}}</h3>
       <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
