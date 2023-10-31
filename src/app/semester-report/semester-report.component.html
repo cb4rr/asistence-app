@@ -2,14 +2,9 @@
 
 <div class="m-4 p-6 h-full">
   <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
-    <div>
-      <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-        Reportes
-      </h2>
-    </div>
-    <div class="float-right">
-      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
-    </div>
+    <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+      Reporte semestral
+    </h2>
   </div>
 
   <div class="flex gap-4 w-full h-1/6 items-center">
@@ -17,7 +12,8 @@
       <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la materia</label>
       <select [(ngModel)]="selectedCourse" id="subject"
         class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option *ngFor="let course of allCourses.data" [value]="course">{{course.courseName}} {{course.modality}}</option>
+        <option *ngFor="let course of allCourses.data" [value]="course">{{course.courseName}} {{course.modality}}
+        </option>
       </select>
     </div>
 

@@ -45,19 +45,17 @@ export class HomeComponent implements OnInit {
 
 
     forkJoin([
-      this.subject.getAllSubjects(), // Obtener todas las asignaturas
-      this.schedule.getAllSchedules() // Obtener todos los horarios
+      this.subject.getAllSubjects(),
+      this.schedule.getAllSchedules()
     ]).subscribe({
       next: (data) => {
-        const subjects = data[0].data; // Supongo que los datos relevantes están en data[0]
-        const schedulesData = data[1].data; // Supongo que los datos relevantes están en data[1]
+        const subjects = data[0].data;
+        const schedulesData = data[1].data;
 
-        // Filtrar los horarios según tu criterio (mismo profesor y día actual)
         this.schedulesTeacher = schedulesData[0].schedules.filter((schedule: any) =>
           schedule.teacherId === this.userInfo.data.userId && schedule.dayOfWeek.toLowerCase() === this.todayName.toLowerCase()
         );
 
-        // Filtrar las asignaturas según tu criterio (mismo profesor)
         this.subjectsTeacher = subjects.filter((subject: any) =>
           subject.teacherId === this.userInfo.data.userId
         );

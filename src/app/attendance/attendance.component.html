@@ -1,36 +1,27 @@
 <app-navbar [userName]="teacherData.data.userName + ' ' + teacherData.data.userLastName" [teacherId]="teacherId" />
 <div class="grid gap-4 m-4 p-4 max-w-screen-2xl">
-  <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
-    <div>
+  <div class="w-full mx-auto text-center lg:mb-8 mb-4 flex flex-col justify-between">
+    <div class="flex gap-2">
       <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
         {{this.informationCourse.data.nameSubject}}</h3>
       <h3 *ngIf="informationCourse" class="text-2xl lg:text-3xl tracking-tight font-bold text-gray-700 dark:text-white">
-        {{this.informationCourse.data.codeSubject}}</h3>
+        #{{this.informationCourse.data.codeSubject}}</h3>
     </div>
-    <div class="float-right">
-      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
-    </div>
-  </div>
-  <div class="max-w-lg">
-    <h2 class="mb-2 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+    <h2 class="text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
       Tomar asistencia
     </h2>
-    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la jornada</label>
-    <select [(ngModel)]="workdaySelected" (change)="getCourses()" id="workday"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-      <option value="Diurno">Diurno</option>
-      <option value="Vespertino">Vespertino</option>
-    </select>
   </div>
-
-  <div class="block max-w-lg" *ngIf="filteredCourse?.length > 0">
-    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige el curso</label>
-    <select [(ngModel)]="courseSelected" (change)="getSchedule()" id="courses"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-      <option *ngFor="let course of filteredCourse" value="{{course._id}}">{{course.courseName}}</option>
-    </select>
+  <div class="max-w">
+    <div class="block max-w-lg">
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige el curso</label>
+      <select [(ngModel)]="courseSelected" (change)="getSchedule()" id="courses"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option disabled>Selecciona</option>
+        <option *ngFor="let course of allCourses.data" [value]="course._id">{{course.courseName}} {{ course.modality }}
+        </option>
+      </select>
+    </div>
   </div>
-
   <div class="relative overflow-x-auto" *ngIf="scheduleCourse.length > 0">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -46,6 +37,9 @@
           </th>
           <th>
             Estado
+          </th>
+          <th>
+            Porcentaje
           </th>
         </tr>
       </thead>

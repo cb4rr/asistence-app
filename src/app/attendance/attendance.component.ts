@@ -81,24 +81,18 @@ export class AttendanceComponent implements OnInit {
     })
   }
 
-  getCourses() {
-    this.filteredCourse = this.allCourses.data.filter((course: any) => course.modality === this.workdaySelected);
-    this.courseSelected = '';
-  }
-
   getSchedule() {
-    if (this.allSchedules && this.allSchedules.data && this.allSchedules.data.length > 0) {
-      const matchingSchedules = this.allSchedules.data[0].schedules.filter((schedule: any) => schedule.courseId === this.courseSelected && this.teacherData.data.userId === schedule.teacherId);
+    this.filteredCourse = this.allCourses.data.filter((course: any) => course._id === this.courseSelected);
 
-      console.log(matchingSchedules);
+    const matchingSchedules = this.allSchedules.data[0].schedules.filter((schedule: any) => schedule.courseId === this.courseSelected && this.teacherData.data.userId === schedule.teacherId);
 
-      if (matchingSchedules.length > 0) {
-        this.scheduleCourse = matchingSchedules;
-      } else {
-        this.workdaySelected = '';
-        this.scheduleCourse = [];
-        this.filteredCourse = [];
-      }
+    if (matchingSchedules.length > 0) {
+      this.scheduleCourse = matchingSchedules;
+    } else {
+      this.toastr.error('No se te ha asignado este curso, vuelve a intentarlo...')
+      this.workdaySelected = '';
+      this.scheduleCourse = [];
+      this.filteredCourse = [];
     }
   }
 
@@ -147,27 +141,27 @@ export class AttendanceComponent implements OnInit {
   calculateAttendancePercentage(studentId: string) {
     let totalSessions = 0;
     let presentSessions = 0;
-  
+
     for (const attendanceEntry of this.allAttendances.data) {
       const studentAttendanceData = attendanceEntry.studentIds.find(
         (attendance) => attendance.studentId === studentId
       );
-  
+
       if (studentAttendanceData) {
         totalSessions++;
-  
+
         if (studentAttendanceData.attendanceStatus === 'Presente') {
           presentSessions++;
         }
       }
     }
-  
+
     if (totalSessions === 0) {
       return 'N/A';
     }
-  
+
     const percentage = (presentSessions / totalSessions) * 100;
     return percentage.toFixed(2) + '%';
   }
-  
+
 }
