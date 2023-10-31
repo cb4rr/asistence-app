@@ -10,6 +10,7 @@ import { Course } from '../models/course';
 import { DatumUser, SingleUser, User, UserRole } from '../models/user';
 import { Schedule, Schedules } from '../models/schedule';
 import { SingleSubject } from '../models/subject';
+import { Attendance } from '../models/attendance';
 
 @Component({
   selector: 'app-attendance',
@@ -30,7 +31,7 @@ export class AttendanceComponent implements OnInit {
   scheduleCourse: Schedules[] = [];
   allSchedules: Schedule = { ok: false, data: [] };
   teacherData: SingleUser = { ok: false, data: { _id: '', userId: '', userName: '', userLastName: '', userRole: UserRole.Profesor, userEmail: '', __v: 0, userBornDate: new Date(), userPassword: '', userPhone: '' } };
-
+  allAttendances: Attendance = { ok: false, data: [] };
 
   constructor(private route: ActivatedRoute, private user: UserService, private subject: SubjectService, private course: CourseService, private attendance: AttendanceService, private schedule: ScheduleService, private toastr: ToastrService, private router: Router) { }
 
@@ -70,6 +71,12 @@ export class AttendanceComponent implements OnInit {
     this.user.getOneUser(this.teacherId).subscribe({
       next: (response) => {
         this.teacherData = response;
+      }
+    });
+
+    this.attendance.getAllAttendances().subscribe({
+      next: (response) => {
+        this.allAttendances = response;
       }
     })
   }
@@ -136,4 +143,31 @@ export class AttendanceComponent implements OnInit {
       }
     })
   };
+
+  calculateAttendancePercentage(studentId: string) {
+    let totalSessions = 0;
+    let presentSessions = 0;
+  
+    for (const attendanceEntry of this.allAttendances.data) {
+      const studentAttendanceData = attendanceEntry.studentIds.find(
+        (attendance) => attendance.studentId === studentId
+      );
+  
+      if (studentAttendanceData) {
+        totalSessions++;
+  
+        if (studentAttendanceData.attendanceStatus === 'Presente') {
+          presentSessions++;
+        }
+      }
+    }
+  
+    if (totalSessions === 0) {
+      return 'N/A';
+    }
+  
+    const percentage = (presentSessions / totalSessions) * 100;
+    return percentage.toFixed(2) + '%';
+  }
+  
 }

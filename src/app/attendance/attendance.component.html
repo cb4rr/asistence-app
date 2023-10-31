@@ -72,7 +72,10 @@
             </div>
           </td>
           <td class="px-6 py-4">
-              {{ attendanceDetails[student] ? attendanceDetails[student] : 'Ausente' }}
+            {{ attendanceDetails[student] ? attendanceDetails[student] : 'Ausente' }}
+          </td>
+          <td>
+            {{calculateAttendancePercentage(student)}}
           </td>
         </tr>
       </tbody>
