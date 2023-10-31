@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Attendance, DatumAttendance, SingleAttendance } from '../models/attendance';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +11,23 @@ export class AttendanceService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAttendances(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances/`);
+  getAllAttendances(): Observable<Attendance> {
+    return this.http.get<Attendance>(`${this.apiUrl}/api/v1/attendances/`);
   }
 
-  getOneAttendance(attendanceId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
+  getOneAttendance(attendanceId: string): Observable<SingleAttendance> {
+    return this.http.get<SingleAttendance>(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
   }
 
-  createOneAttendance(attendanceData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/attendances/`, attendanceData);
+  createOneAttendance(attendanceData: DatumAttendance): Observable<SingleAttendance> {
+    return this.http.post<SingleAttendance>(`${this.apiUrl}/api/v1/attendances/`, attendanceData);
   }
 
   updateOneAttendance(attendanceId: string, changes: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/api/v1/attendances/`, attendanceId, changes);
+    return this.http.patch<SingleAttendance>(`${this.apiUrl}/api/v1/attendances/`, attendanceId, changes);
   }
 
-  deleteOneAttendance(attendanceId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
+  deleteOneAttendance(attendanceId: string): Observable<SingleAttendance> {
+    return this.http.delete<SingleAttendance>(`${this.apiUrl}/api/v1/attendances/${attendanceId}`);
   }
 }

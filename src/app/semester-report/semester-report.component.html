@@ -12,23 +12,15 @@
 
   <div class="flex gap-4 w-full h-1/6 items-center">
     <div class="w-full">
-      <label for="student" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige el
-        estudiante</label>
-      <select [(ngModel)]="studentIdToReport" (change)="getSingleStudent()" id="student"
-        class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option *ngFor="let student of allUsers" [value]="student._id">{{student.userName}} {{student.userLastName}}
-          {{student.userId}}</option>
-      </select>
-    </div>
-    <div class="w-full">
       <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la materia</label>
-      <select [(ngModel)]="selectedSubject" (change)="getSingleStudent()" id="subject"
+      <select [(ngModel)]="selectedCourse" id="subject"
         class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option *ngFor="let subject of allSubjects" [value]="subject.codeSubject">{{subject.nameSubject}} {{subject.codeSubject}}</option>
+        <option *ngFor="let course of allCourses.data" [value]="course">{{course.courseName}} {{course.modality}}</option>
       </select>
     </div>
+
     <div class="max-w-xs pt-8">
-      <button (click)="generateAttendanceReport()"
+      <button (click)="generateSemesterReports()"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Obtener</button>
     </div>
   </div>

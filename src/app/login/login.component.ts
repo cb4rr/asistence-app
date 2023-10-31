@@ -28,10 +28,12 @@ export class LoginComponent implements OnInit {
     this.users.logInUser(userData).subscribe({
       next: (response) => {
         this.toastr.success(`¡Bienvenido ${response.data.userName} ${response.data.userLastName}!`);
-        return this.router.navigate(['/home', { teacher: response._id }])
+        console.log(response);
+        this.router.navigate(['/home', { teacher: response.data._id }])
       },
       error: (error) => {
         if (!error.ok) {
+          console.log(error);
           this.toastr.error(`Credenciales erroneas`);
           this.userId = '';
           this.userPassword = '';

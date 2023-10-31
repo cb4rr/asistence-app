@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../services/user.service';
 import { ScheduleService } from '../services/schedule.service';
 import { forkJoin } from 'rxjs';
+import { DatumSubject } from '../models/subject';
+import { SingleUser, UserRole } from '../models/user';
+import { Schedules } from '../models/schedule';
 
 @Component({
   selector: 'app-home',
@@ -12,15 +15,15 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  userId: any;
-  subjectsTeacher: any;
-  userInfo: any;
+  userId: string = '';
+  subjectsTeacher: DatumSubject[] = [];
+  userInfo: SingleUser = { ok: false, data: { _id: '', __v: 0, userId: '', userEmail: '', userBornDate: new Date(), userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } };
   todayDate: Date = new Date();
-  daysOfWeek = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  daysOfWeek: string[] = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   today = new Date().getDay();
-  todayName = this.daysOfWeek[this.today];
-  subjectsForToday: any = [];
-  schedulesTeacher: any;
+  todayName: string = this.daysOfWeek[this.today];
+  subjectsForToday: DatumSubject[] = [];
+  schedulesTeacher: Schedules[] = [];
 
 
   constructor(private route: ActivatedRoute, private subject: SubjectService, private toastr: ToastrService, private user: UserService, private router: Router, private schedule: ScheduleService) { }
@@ -58,34 +61,38 @@ export class HomeComponent implements OnInit {
           subject.teacherId === this.userInfo.data.userId
         );
 
-        // Ahora, combina las asignaturas con los horarios
-        this.subjectsForToday = this.schedulesTeacher.map((schedule: any) => {
+        this.subjectsForToday = this.schedulesTeacher.map((schedule) => {
           const matchingSubject = this.subjectsTeacher.find((subject: any) =>
             subject.teacherId === schedule.teacherId
           );
 
-          // Si se encuentra una asignatura que coincide con el horario, regresamos sus campos 'nameSubject' y 'codeSubject'
           if (matchingSubject) {
             return {
+              _id: matchingSubject._id,
               nameSubject: matchingSubject.nameSubject,
-              codeSubject: matchingSubject.codeSubject
+              codeSubject: matchingSubject.codeSubject,
+              __v: matchingSubject.__v
             };
           }
-          return null; // Puedes manejar esto según tus necesidades
-        }).filter((subject: any) => subject !== null); // Filtra para eliminar valores nulos
+          return;
+        }).filter((subject) => subject !== undefined) as DatumSubject[];
       },
       error: (err) => {
         this.toastr.error('Ha ocurrido un error al buscar los datos.');
       }
     });
-
   }
 
   subjectInfo(subjectId: string) {
-    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }])
+    console.log(subjectId);
+    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }]);
   }
 
   getReport() {
     this.router.navigate(['/report', { teacher: this.userId }]);
+  }
+
+  getSemesterReport() {
+    this.router.navigate(['/report-semester', { teacher: this.userId }]);
   }
 }

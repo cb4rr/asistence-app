@@ -2,9 +2,8 @@
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 flex flex-col justify-center items-center">
     <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
       <div class="flex items-center justify-center gap-2">
-        <p class="font-light text-gray-500 sm:text-3xl dark:text-gray-400">Bienvenido</p>
         <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-          {{userInfo.data?.userName | uppercase }} {{userInfo.data?.userLastName | uppercase}}</h2>
+          {{userInfo.data.userName | uppercase }} {{userInfo.data.userLastName | uppercase}}</h2>
       </div>
       <div class="float-right">
         <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
@@ -13,23 +12,37 @@
 
     <div class="grid gap-40 lg:grid-cols-4 w-full items-center">
       <div class="grid gap-8 lg:col-span-3 lg:grid-cols-2 w-full justify-center">
-        <article *ngIf="subjectsForToday.length === 0">
-          <h2 class="mb-4 text-2xl lg:text-3xl tracking-tight font-normal text-gray-700 dark:text-white">No existen
-            asignaturas para el día de hoy...</h2>
-        </article>
-        <article *ngFor="let subject of subjectsForToday" class="block w-full cursor-pointer">
-          <a (click)="subjectInfo(subject._id)"
-            class="block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{subject.nameSubject}}
-            </h5>
-            <p class="font-normal text-gray-700 dark:text-gray-400">{{subject.codeSubject}}</p>
-          </a>
-        </article>
+        <div class="">
+          <h2 class="mb-4 text-2xl lg:text-3xl tracking-tight font-bold text-gray-900 dark:text-white">
+            Asignaturas</h2>
+          <article *ngIf="subjectsForToday.length === 0">
+            <h2 class="mb-4 text-2xl lg:text-3xl tracking-tight font-normal text-gray-700 dark:text-white">No existen
+              asignaturas para el día de hoy...</h2>
+          </article>
+          <article *ngFor="let subject of subjectsForToday" class="block w-full cursor-pointer">
+            <a (click)="subjectInfo(subject._id)"
+              class="block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{subject.nameSubject}}
+              </h5>
+              <p class="font-normal text-gray-700 dark:text-gray-400">{{subject.codeSubject}}</p>
+            </a>
+          </article>
+        </div>
       </div>
+
       <div class="gap-8 flex flex-col w-full">
         <button (click)="getReport()" type="button"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          Reportes
+          Reporte por asignatura
+          <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9" />
+          </svg>
+        </button>
+        <button (click)="getSemesterReport()" type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Reporte semestral
           <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 14 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,6 +50,7 @@
           </svg>
         </button>
       </div>
+
     </div>
   </div>
 </section>

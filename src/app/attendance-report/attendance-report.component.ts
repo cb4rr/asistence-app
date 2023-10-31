@@ -4,6 +4,9 @@ import { PdfGeneratorService } from '../services/pdf-generator.service';
 import { UserService } from '../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { SubjectService } from '../services/subject.service';
+import { Attendance } from '../models/attendance';
+import { DatumUser, SingleUser, User, UserRole } from '../models/user';
+import { DatumSubject } from '../models/subject';
 
 @Component({
   selector: 'app-attendance-report',
@@ -11,14 +14,14 @@ import { SubjectService } from '../services/subject.service';
   styleUrls: ['./attendance-report.component.css']
 })
 export class AttendanceReportComponent implements OnInit {
-  attendanceData: any;
+  attendanceData: Attendance = { ok: false, data: [] };
   blobPdf: any;
-  allUsers: any;
-  singleUser: any;
-  studentIdToReport = '';
+  allUsers: DatumUser[] = [];
+  singleUser: SingleUser = { ok: false, data: { _id: '', __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Alumno } };
+  studentIdToReport: string = '';
   todayDate: Date = new Date();
   selectedSubject: string = '';
-  allSubjects: any;
+  allSubjects: DatumSubject[] = [];
 
   constructor(private attendance: AttendanceService, private pdfGeneratorService: PdfGeneratorService, private user: UserService, private toastr: ToastrService, private subject: SubjectService) {
   }
@@ -43,37 +46,36 @@ export class AttendanceReportComponent implements OnInit {
   }
 
   generateAttendanceReport() {
-    if (this.attendanceData) {
-      const studentData = this.attendanceData.data.filter((attendance: any) => {
-        return attendance.studentIds.some((student: any) => student.studentId === this.studentIdToReport && this.selectedSubject === attendance.codeSubject);
-      });
+    const studentData = this.attendanceData.data.filter((attendance: any) => {
+      return attendance.studentIds.some((student: any) => student.studentId === this.singleUser.data.userId && this.selectedSubject === attendance.codeSubject);
+    });
 
-      if (studentData.length === 0) {
-        this.toastr.error('El estudiante no tiene registros de asistencia.');
-        return;
-      }
-
-      const totalSessions = studentData.length;
-      const presentSessions = studentData.filter((attendance: any) => {
-        return attendance.studentIds.some((student: any) => student.studentId === this.studentIdToReport && student.attendanceStatus === 'Presente');
-      }).length;
-
-      const attendancePercentage = (presentSessions / totalSessions) * 100;
-
-      // Generar el PDF usando el servicio
-      this.pdfGeneratorService.generateAttendanceReportPDF(this.singleUser[0].userName + ' ' + this.singleUser[0].userLastName, studentData, this.studentIdToReport, totalSessions, presentSessions, attendancePercentage.toFixed(2) + '%')
-        .then((blob: any) => {
-          this.blobPdf = URL.createObjectURL(blob);
-        })
-        .catch((error: any) => {
-          this.toastr.error('Error al generar el PDF');
-        });
-    } else {
-      this.toastr.error('Los datos de asistencia no están disponibles.');
+    if (studentData.length === 0) {
+      this.toastr.error('El estudiante no tiene registros de asistencia.');
+      return;
     }
+
+    const totalSessions = studentData.length;
+    const presentSessions = studentData.filter((attendance: any) => {
+      return attendance.studentIds.some((student: any) => student.studentId === this.singleUser.data.userId && student.attendanceStatus === 'Presente');
+    }).length;
+
+    const attendancePercentage = (presentSessions / totalSessions) * 100;
+
+    this.pdfGeneratorService.generateAttendanceReportPDF(this.singleUser.data.userName + ' ' + this.singleUser.data.userLastName, studentData, this.singleUser.data.userId, totalSessions, presentSessions, attendancePercentage.toFixed(2) + '%')
+      .then((blob: any) => {
+        this.blobPdf = URL.createObjectURL(blob);
+      })
+      .catch((error: any) => {
+        this.toastr.error('Error al generar el PDF');
+      });
   }
 
   getSingleStudent() {
-    this.singleUser = this.allUsers.filter((user: any) => user.userId === this.studentIdToReport);
+    this.user.getOneUser(this.studentIdToReport).subscribe({
+      next: (response) => {
+        this.singleUser = response;
+      }
+    });
   }
 }
