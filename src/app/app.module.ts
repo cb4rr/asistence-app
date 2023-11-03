@@ -14,15 +14,19 @@ import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { AttendanceReportComponent } from './attendance-report/attendance-report.component';
+import { SemesterReportComponent } from './semester-report/semester-report.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
-  declarations: [
+  declarations: [		
     AppComponent,
     LoginComponent,
     HomeComponent,
     AttendanceComponent,
-    AttendanceReportComponent
-  ],
+    AttendanceReportComponent,
+      SemesterReportComponent,
+      NavbarComponent
+   ],
   imports: [
     BrowserModule,
     AppRoutingModule,

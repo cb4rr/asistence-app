@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Course, DatumCourse, SingleCourse } from '../models/course';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +11,23 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCourses(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/courses/`);
+  getAllCourses(): Observable<Course> {
+    return this.http.get<Course>(`${this.apiUrl}/api/v1/courses/`);
   }
 
-  getOneCourse(courseId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/v1/courses/${courseId}`);
+  getOneCourse(courseId: string): Observable<SingleCourse> {
+    return this.http.get<SingleCourse>(`${this.apiUrl}/api/v1/courses/${courseId}`);
   }
 
-  createOneCourse(courseData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/v1/courses/`, courseData);
+  createOneCourse(courseData: DatumCourse): Observable<SingleCourse> {
+    return this.http.post<SingleCourse>(`${this.apiUrl}/api/v1/courses/`, courseData);
   }
 
   updateOneCourse(courseId: string, changes: any): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/api/v1/courses/`, courseId, changes);
   }
 
-  deleteOneCourse(courseId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/api/v1/courses/${courseId}`);
+  deleteOneCourse(courseId: string): Observable<SingleCourse> {
+    return this.http.delete<SingleCourse>(`${this.apiUrl}/api/v1/courses/${courseId}`);
   }
 }

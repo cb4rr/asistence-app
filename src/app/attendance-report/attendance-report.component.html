@@ -1,13 +1,9 @@
+<app-navbar [userName]="teacherData.data.userName + ' ' + teacherData.data.userLastName" [teacherId]="teacherId" />
 <div class="m-4 p-6 h-full">
   <div class="w-full mx-auto text-center lg:mb-16 mb-8 flex justify-between">
-    <div>
       <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-        Reportes
+        Reporte por estudiante
       </h2>
-    </div>
-    <div class="float-right">
-      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">El día de hoy es: {{todayDate | date}}</p>
-    </div>
   </div>
 
   <div class="flex gap-4 w-full h-1/6 items-center">
@@ -16,7 +12,7 @@
         estudiante</label>
       <select [(ngModel)]="studentIdToReport" (change)="getSingleStudent()" id="student"
         class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option *ngFor="let student of allUsers" [value]="student.userId">{{student.userName}} {{student.userLastName}}
+        <option *ngFor="let student of allUsers" [value]="student._id">{{student.userName}} {{student.userLastName}}
           {{student.userId}}</option>
       </select>
     </div>

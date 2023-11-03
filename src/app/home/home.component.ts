@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../services/user.service';
 import { ScheduleService } from '../services/schedule.service';
 import { forkJoin } from 'rxjs';
+import { DatumSubject } from '../models/subject';
+import { SingleUser, UserRole } from '../models/user';
+import { Schedules } from '../models/schedule';
 
 @Component({
   selector: 'app-home',
@@ -12,15 +15,15 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  userId: any;
-  subjectsTeacher: any;
-  userInfo: any;
+  userId: string = '';
+  userInfo: SingleUser = { ok: false, data: { _id: '', __v: 0, userId: '', userEmail: '', userBornDate: new Date(), userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } };
   todayDate: Date = new Date();
-  daysOfWeek = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  daysOfWeek: string[] = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   today = new Date().getDay();
-  todayName = this.daysOfWeek[this.today];
-  subjectsForToday: any = [];
-  schedulesTeacher: any;
+  todayName: string = this.daysOfWeek[this.today];
+  subjectsForToday: DatumSubject[] = [];
+  schedulesTeacher: Schedules[] = [];
+  teacherData: SingleUser = { ok: false, data: { _id: '', __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } }
 
 
   constructor(private route: ActivatedRoute, private subject: SubjectService, private toastr: ToastrService, private user: UserService, private router: Router, private schedule: ScheduleService) { }
@@ -41,51 +44,34 @@ export class HomeComponent implements OnInit {
 
 
     forkJoin([
-      this.subject.getAllSubjects(), // Obtener todas las asignaturas
-      this.schedule.getAllSchedules() // Obtener todos los horarios
+      this.subject.getAllSubjects(),
+      this.schedule.getAllSchedules()
     ]).subscribe({
       next: (data) => {
-        const subjects = data[0].data; // Supongo que los datos relevantes están en data[0]
-        const schedulesData = data[1].data; // Supongo que los datos relevantes están en data[1]
+        const subjects = data[0].data;
+        const schedulesData = data[1].data;
 
-        // Filtrar los horarios según tu criterio (mismo profesor y día actual)
-        this.schedulesTeacher = schedulesData[0].schedules.filter((schedule: any) =>
-          schedule.teacherId === this.userInfo.data.userId && schedule.dayOfWeek.toLowerCase() === this.todayName.toLowerCase()
-        );
+        this.schedulesTeacher = schedulesData[0].schedules.filter((schedule) => schedule.dayOfWeek === this.todayName && schedule.teacherId === this.userInfo.data.userId);
 
-        // Filtrar las asignaturas según tu criterio (mismo profesor)
-        this.subjectsTeacher = subjects.filter((subject: any) =>
-          subject.teacherId === this.userInfo.data.userId
-        );
-
-        // Ahora, combina las asignaturas con los horarios
-        this.subjectsForToday = this.schedulesTeacher.map((schedule: any) => {
-          const matchingSubject = this.subjectsTeacher.find((subject: any) =>
-            subject.teacherId === schedule.teacherId
-          );
-
-          // Si se encuentra una asignatura que coincide con el horario, regresamos sus campos 'nameSubject' y 'codeSubject'
-          if (matchingSubject) {
-            return {
-              nameSubject: matchingSubject.nameSubject,
-              codeSubject: matchingSubject.codeSubject
-            };
-          }
-          return null; // Puedes manejar esto según tus necesidades
-        }).filter((subject: any) => subject !== null); // Filtra para eliminar valores nulos
+        this.subjectsForToday = subjects.filter((subject) => {
+          return this.schedulesTeacher.some((schedule) => subject.teacherId === this.userInfo.data.userId && schedule.nameSubject === subject.nameSubject)
+        });
       },
       error: (err) => {
         this.toastr.error('Ha ocurrido un error al buscar los datos.');
       }
     });
-
   }
 
-  subjectInfo(subjectId: string) {
-    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }])
+  subjectInfo(subject: any) {
+    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subject._id }]);
   }
 
   getReport() {
     this.router.navigate(['/report', { teacher: this.userId }]);
+  }
+
+  getSemesterReport() {
+    this.router.navigate(['/report-semester', { teacher: this.userId }]);
   }
 }
