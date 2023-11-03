@@ -39,6 +39,7 @@ export class AttendanceComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.teacherId = params['teacher'];
       this.subjectId = params['subject'];
+      console.log(this.subjectId)
     });
 
     this.course.getAllCourses().subscribe({

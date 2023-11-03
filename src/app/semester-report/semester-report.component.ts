@@ -21,12 +21,14 @@ export class SemesterReportComponent implements OnInit {
   allSubjects: Subject = { ok: false, data: [] }
   blobPdfs: any[] = [];
   allCourses: Course = { ok: false, data: [] };
-  selectedCourse: DatumCourse = { __v: 0, _id: '', courseName: '', modality: '', scheduleId: '', studentArray: [] };
+  selectedCourse: string = '';
   blobPdf: any;
   todayDate: Date = new Date();
   allAttendances: Attendance = { ok: false, data: [] };
   userId: string = '';
   userInfo: SingleUser = { ok: false, data: { _id: '', __v: 0, userBornDate: new Date(), userEmail: '', userId: '', userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } }
+  filteredCourses: DatumCourse[] = [];
+  filteredAttendance: Attendance = { ok: false, data: [] };
 
   constructor(
     private pdfGeneratorService: PdfGeneratorService,
@@ -67,10 +69,21 @@ export class SemesterReportComponent implements OnInit {
     })
   }
 
+  onCourseSelectionChange() {
+    if (this.selectedCourse) {
+      this.filteredAttendance.data = this.allAttendances.data.filter((attendance) => attendance.courseId === this.selectedCourse);
+    }
+    return;
+  }
+
   generateSemesterReports() {
     const studentAttendanceData: any = {};
 
-    this.allAttendances.data.forEach((attendance) => {
+    if (this.filteredAttendance.data.length === 0) {
+      return this.toastr.error('No existen asistencias que mostrar');
+    }
+
+    this.filteredAttendance.data.forEach((attendance) => {
       attendance.studentIds.forEach((student) => {
         const studentId = student.studentId;
         const courseCode = attendance.codeSubject;
@@ -87,6 +100,7 @@ export class SemesterReportComponent implements OnInit {
           date: attendance.date,
           attendanceStatus: student.attendanceStatus,
         });
+
       });
     });
 
@@ -101,5 +115,6 @@ export class SemesterReportComponent implements OnInit {
       this.toastr.error('Error al generar el informe', error);
     });
 
+    return;
   }
 }

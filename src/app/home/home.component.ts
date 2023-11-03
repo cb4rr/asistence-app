@@ -16,7 +16,6 @@ import { Schedules } from '../models/schedule';
 })
 export class HomeComponent implements OnInit {
   userId: string = '';
-  subjectsTeacher: DatumSubject[] = [];
   userInfo: SingleUser = { ok: false, data: { _id: '', __v: 0, userId: '', userEmail: '', userBornDate: new Date(), userLastName: '', userName: '', userPassword: '', userPhone: '', userRole: UserRole.Profesor } };
   todayDate: Date = new Date();
   daysOfWeek: string[] = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
@@ -52,29 +51,11 @@ export class HomeComponent implements OnInit {
         const subjects = data[0].data;
         const schedulesData = data[1].data;
 
-        this.schedulesTeacher = schedulesData[0].schedules.filter((schedule: any) =>
-          schedule.teacherId === this.userInfo.data.userId && schedule.dayOfWeek.toLowerCase() === this.todayName.toLowerCase()
-        );
+        this.schedulesTeacher = schedulesData[0].schedules.filter((schedule) => schedule.dayOfWeek === this.todayName && schedule.teacherId === this.userInfo.data.userId);
 
-        this.subjectsTeacher = subjects.filter((subject: any) =>
-          subject.teacherId === this.userInfo.data.userId
-        );
-
-        this.subjectsForToday = this.schedulesTeacher.map((schedule) => {
-          const matchingSubject = this.subjectsTeacher.find((subject: any) =>
-            subject.teacherId === schedule.teacherId
-          );
-
-          if (matchingSubject) {
-            return {
-              _id: matchingSubject._id,
-              nameSubject: matchingSubject.nameSubject,
-              codeSubject: matchingSubject.codeSubject,
-              __v: matchingSubject.__v
-            };
-          }
-          return;
-        }).filter((subject) => subject !== undefined) as DatumSubject[];
+        this.subjectsForToday = subjects.filter((subject) => {
+          return this.schedulesTeacher.some((schedule) => subject.teacherId === this.userInfo.data.userId && schedule.nameSubject === subject.nameSubject)
+        });
       },
       error: (err) => {
         this.toastr.error('Ha ocurrido un error al buscar los datos.');
@@ -82,9 +63,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  subjectInfo(subjectId: string) {
-    console.log(subjectId);
-    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subjectId }]);
+  subjectInfo(subject: any) {
+    this.router.navigate(['/attendance', { teacher: this.userInfo.data._id, subject: subject._id }]);
   }
 
   getReport() {

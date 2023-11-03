@@ -1,8 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { DatumUser, User } from '../models/user';
-import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -129,7 +127,6 @@ export class PdfGeneratorService {
       const studentDetails = studentsData[studentId];
       const studentName = this.getStudentName(allStudents, studentId);
 
-      // Crear una tabla para el estudiante
       const studentTable = this.generateStudentTable(studentName, studentDetails);
 
       tables.push(studentTable);

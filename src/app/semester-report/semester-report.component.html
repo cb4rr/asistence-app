@@ -10,9 +10,10 @@
   <div class="flex gap-4 w-full h-1/6 items-center">
     <div class="w-full">
       <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige la materia</label>
-      <select [(ngModel)]="selectedCourse" id="subject"
+      <select [(ngModel)]="selectedCourse" (ngModelChange)="onCourseSelectionChange()" id="subject" id="subject"
         class="max-w-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option *ngFor="let course of allCourses.data" [value]="course">{{course.courseName}} {{course.modality}}
+        <option disabled>Selecciona</option>
+        <option *ngFor="let course of allCourses.data" [value]="course._id">{{course.courseName}} {{course.modality}}
         </option>
       </select>
     </div>
